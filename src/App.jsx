@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react'
-
+import Swal from 'sweetalert2'
 function App() {
   const [todo, setTodo] = useState([]);
   const addtodo = useRef()
@@ -12,9 +12,10 @@ function App() {
 
   // Get User Start
   const getUser = () => {
-    axios.get('http://localhost:3000/api/v1/users')
+    axios.get('https://express-backend-crud.vercel.app/api/v1/users')
       .then((res) => {
         setTodo(res.data)
+
         // console.log(res.data)
       }).catch((err) => {
         console.log(err);
@@ -29,14 +30,29 @@ function App() {
     event.preventDefault();
     {
       addtodo.current.value.trim() === "" ? alert('Enter Todo') :
-        axios.post('http://localhost:3000/api/v1/users', {
+        axios.post('https://express-backend-crud.vercel.app/api/v1/users', {
           title: addtodo.current.value
         }).then((res) => {
           // console.log(res);
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Todo Add successfully"
+          });
           getUser()
           addtodo.current.value = '';
         }).catch((error) => {
-          // console.log(error);
+          console.log(error);
         })
     }
   }
@@ -45,10 +61,15 @@ function App() {
 
   // Delete Todo Start
   const delet = (id) => {
-    // console.log(id);
-    axios.delete(`http://localhost:3000/api/v1/users/${id}`)
+    axios.delete(`https://express-backend-crud.vercel.app/api/v1/users/${id}`)
       .then((res) => {
-        // console.log(res);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Item Deleted successfully",
+          showConfirmButton: false,
+          timer: 1500
+        });
         getUser()
       }).catch((error) => {
         // console.log(error);
@@ -61,14 +82,14 @@ function App() {
   const edit = (id) => {
     const updateTitle = prompt('Enter Update Todo');
     console.log(updateTitle);
-    axios.put(`http://localhost:3000/api/v1/users/${id}`, {
+    axios.put(`https://express-backend-crud.vercel.app/api/v1/users/${id}`, {
       title: updateTitle
     })
       .then((res) => {
         // console.log(res);
         getUser()
       }).catch((error) => {
-        // console.log(error);
+        console.log(error);
       })
   }
   // Edit Todo End
