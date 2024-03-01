@@ -15,7 +15,7 @@ function App() {
     axios.get('http://localhost:3000/api/v1/users')
       .then((res) => {
         setTodo(res.data)
-        console.log(res.data)
+        // console.log(res.data)
       }).catch((err) => {
         console.log(err);
       })
@@ -36,7 +36,7 @@ function App() {
           getUser()
           addtodo.current.value = '';
         }).catch((error) => {
-          console.log(error);
+          // console.log(error);
         })
     }
   }
@@ -48,10 +48,10 @@ function App() {
     // console.log(id);
     axios.delete(`http://localhost:3000/api/v1/users/${id}`)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         getUser()
       }).catch((error) => {
-        console.log(error);
+        // console.log(error);
       })
   }
   // Delete Todo Delete
@@ -59,17 +59,16 @@ function App() {
 
   // Edit Todo Start
   const edit = (id) => {
-    // console.log(id);
     const updateTitle = prompt('Enter Update Todo');
     console.log(updateTitle);
     axios.put(`http://localhost:3000/api/v1/users/${id}`, {
       title: updateTitle
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         getUser()
       }).catch((error) => {
-        console.log(error);
+        // console.log(error);
       })
   }
   // Edit Todo End
